@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -12,7 +13,7 @@
         <h1 class="text-center mt-5">Book My Show</h1>
         <form id="movieForm" autocomplete="off">
             <div class="form-group">
-                <label for="movie">Movie name</label>
+                <!-- <label for="movie">Movie name</label> -->
                 <input class="form-control" type="text" id="movie" placeholder="Search movie...">
             </div>
             <div class="form-group text-center mt-2">
@@ -26,6 +27,13 @@
     
 	async function searchMovies()
 	{
+		if(document.getElementById('movie').value == "")
+		{
+			alert("Enter movie name to search");
+			document.getElementById('movie').focus();
+			return;
+		}
+		
 		var apikey = "ac5a571b";
 		
 		var searchTerm = document.getElementById('movie').value;
@@ -39,26 +47,26 @@
 		
 		console.log(data);
 		
-		if (data) {
-			const movies = data;
-			
+		if (data != null) {
+						
 			result = document.getElementById('result');
-			result.innerHTML = '';
+			result.innerHTML = '';			
 			
-			//movies.forEach(movie => {
+			const movieElement = document.createElement('div');
+			movieElement.classList.add('movie');
 			
-				const movieElement = document.createElement('div');
-				movieElement.classList.add('movie');
-				
-				movieElement.innerHTML = `
-					<img src="${movies.Poster}" alt="${movies.Title}">
-					<h2>${movies.Title}</h2>
-					<p>Year: ${movies.Year}</p>
-				`;
-				result.appendChild(movieElement);
-				
-			//});
+			movieElement.innerHTML = `
+				<img style="float:center" class="img-thumnail" width="300" height="250" src="${data.Poster}">
+				<h2>${data.Title}</h2>
+				<h4>${data.Released}</h4>
+				<h4>${data.Runtime}</h4>
+				<h4>${data.Genre}</h4>
+				<h4>${data.Director}</h4>
+				<h4>${data.Actors}</h4>
+			`;				
 			
+			result.appendChild(movieElement);
+							
 		} else {
 			result.innerHTML = '<p>No results found</p>';
 		}
